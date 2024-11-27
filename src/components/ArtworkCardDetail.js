@@ -3,7 +3,8 @@ import Error from "next/error";
 import { Card, Button } from "react-bootstrap";
 import { useAtom } from "jotai";
 import { favouritesAtom } from "../../store.js";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { addToFavourites, removeFromFavourites } from "../../lib/userData.js";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
@@ -16,16 +17,21 @@ export default function ArtworkCardDetail({ objectID }) {
   );
 
   const [favouritesList, setFavouritesList] = useAtom(favouritesAtom);
-  const [showAdded, setShowAdded] = useState(favouritesList.includes(objectID));
-  const favouritesClicked = () => {
+  const [showAdded, setShowAdded] = useState(false);
+
+  useEffect(() => {
+    setShowAdded(favouritesList.includes(objectID));
+  }, [favouritesList]);
+
+  async function favouritesClicked() {
     if (showAdded) {
-      setFavouritesList((current) => current.filter((fav) => fav !== objectID));
+      setFavouritesList(await removeFromFavourites(objectID));
       setShowAdded(false);
     } else {
-      setFavouritesList((current) => [...current, objectID]);
+      setFavouritesList(await addToFavourites(objectID));
       setShowAdded(true);
     }
-  };
+  }
   if (error) return <Error statusCode={404} />;
 
   if (!data) return null;

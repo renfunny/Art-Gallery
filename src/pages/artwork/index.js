@@ -53,8 +53,6 @@ export default function Artwork({ objectID }) {
 
   if (!artworkList) return null;
 
-  console.log(artworkList);
-
   return (
     <>
       <Row className="gy-4">

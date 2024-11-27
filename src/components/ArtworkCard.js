@@ -21,7 +21,6 @@ export default function ArtworkCard({ objectID }) {
   const objectDate = data.objectDate || "N/A";
   const classification = data.classification || "N/A";
   const medium = data.medium || "N/A";
-  console.log(title, objectDate, classification, medium);
 
   return (
     <>
